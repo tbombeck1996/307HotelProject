@@ -1,3 +1,5 @@
+package javaCode;
+
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
