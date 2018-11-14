@@ -8,6 +8,10 @@ public class Rooms {
 	private boolean kitchenette;
 	private boolean handicapped;
 
+	public Rooms(int roomNum) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void setRoomPrice(double roomPrice) {
 		this.roomPrice = roomPrice;
 	}
