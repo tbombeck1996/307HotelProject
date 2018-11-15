@@ -15,27 +15,26 @@ public class HotelDB {
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
 		// Use database.properties
 		if (args.length == 0) {
-			System.out.println("Usage: java CarDB propertiesFile");
+			System.out.println("Usage: java HotelDB propertiesFile");
 			System.exit(0);
 		}
 
 		SimpleDataSource.init(args[0]);
 		try (Connection conn = SimpleDataSource.getConnection(); Statement stat = conn.createStatement()) {
 			try {
-				stat.execute("DROP TABLE Car");
+				stat.execute("DROP TABLE Hotel");
 			} catch (SQLException e) {
 				// get exception if table doesn't exist yet
 			}
 
-			stat.execute("CREATE TABLE Car (Manufacturer VARCHAR(20)," + "Model VARCHAR(20), "
-					+ "Efficiency DECIMAL(6,2), " + "Price DECIMAL(8,2)) ");
+			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(3, 2), "
+					+ "numOfBeds INT, " + "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
 
-			String inputFileName = "carmpg.txt";
+			String inputFileName = "hotel.txt";
 			File inputFile = new File(inputFileName);
 			Scanner in = new Scanner(inputFile);
 
-			// COMPLETE THIS WHILE LOOP to insert all cars from the input text
-			// file
+			// insert all rooms from tzt file
 			while (in.hasNextLine()) {
 				String manufacturer = in.next();
 				String model = in.next();
