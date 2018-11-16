@@ -6,8 +6,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Kate
+ * Last updated: 11/16
+ * This class is meant as the main menu. Consists of the main method.
+ *
+ */
+
 public class HotelProgram {
-	// main menu
+	/**
+	 * main method
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 

@@ -1,5 +1,3 @@
-//all of this is from the HW5; none of it is changed for the hotel DB; just using as a template to connect to a database
-
 package javaCode;
 
 import java.io.File;
@@ -10,6 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+
+/*
+ * This class is a template from HW5. This class is meant to connect and get all of our data from the hotel.txt
+ * Work in progress to convert this to work for our project.
+ * @author Kate
+ * Last updated: 11/16
+ */
 
 public class HotelDB {
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
