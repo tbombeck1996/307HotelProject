@@ -1,21 +1,17 @@
 package javaCode;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
+import java.io.*;
 
-/*
- * This class is a template from HW5. This class is meant to connect and get all of our data from the hotel.txt
- * Work in progress to convert this to work for our project.
- * @author Kate
- * Last updated: 11/16
+/**
+ * Updated: 11/27 
+ * @author Katherine DuVall
  */
-
 public class HotelDB {
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
 		// Use database.properties
@@ -32,107 +28,103 @@ public class HotelDB {
 				// get exception if table doesn't exist yet
 			}
 
-			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(3, 2), "
-					+ "numOfBeds INT, " + "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
+			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(5, 2), " + "numOfBeds INT, "
+					+ "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
 
 			String inputFileName = "hotel.txt";
 			File inputFile = new File(inputFileName);
 			Scanner in = new Scanner(inputFile);
 
-			// insert all rooms from tzt file
+			// COMPLETE THIS WHILE LOOP to insert all cars from the input text
+			// file
 			while (in.hasNextLine()) {
-				String manufacturer = in.next();
-				String model = in.next();
-				double efficiency = in.nextDouble();
-				double price = in.nextDouble();
-				String query = "INSERT INTO Car (Manufacturer, Model, Efficiency, Price) VALUES ('" + manufacturer
-						+ "','" + model + "'," + efficiency + "," + price + ")";
+				int roomNum = in.nextInt();
+				double roomPrice = in.nextDouble();
+				int numOfBeds = in.nextInt();
+				boolean kitchenette = in.nextBoolean();
+				boolean handicapped = in.nextBoolean();
+				String query = "INSERT INTO Hotel (RoomNum, RoomPrice, NumOfBeds, Kitchenette, Handicapped) VALUES ("
+						+ roomNum + "," + roomPrice + "," + numOfBeds + "," + kitchenette + "," + handicapped + ")";
 				stat.execute(query);
-				// Main loop of the program. Complete this while loop.
-				Scanner in2 = new Scanner(System.in);
-				boolean continueProgram = true;
-				while (continueProgram) {
-					System.out.println("Select from the following options");
-					System.out.println("(Q) Quit");
-					System.out.println("(A) Add a car");
-					System.out.println("(C) Calculate average");
-					System.out.println("(W) Write the entire table to a text file");
-					System.out.println("(P) Print the entire table");
-					System.out.println("(M) Print a subset of the cars based on MPG");
-					String select = in2.next();
-
-					select = select.toUpperCase();
-					if (select.equals("Q"))
-						continueProgram = false;
-					else if (select.equals("A")) {
-						System.out.println("Manufacturer name: ");
-						String manufacturer = in2.next();
-						System.out.println("Model Name: ");
-						String model = in2.next();
-						System.out.println("MPG: ");
-						double efficiency = in2.nextDouble();
-						System.out.println("Price: ");
-						double price = in2.nextDouble();
-						String query = "INSERT INTO Car (Manufacturer, Model, Efficiency, Price) VALUES ('"
-								+ manufacturer + "','" + model + "'," + efficiency + "," + price + ")";
-						stat.execute(query);
-						System.out.println();
-					} else if (select.equals("C")) {
-						ResultSet avgResult = stat.executeQuery("SELECT AVG(Efficiency) As ef FROM Car");
-						while (avgResult.next()) {
-							double avg = avgResult.getDouble("ef");
-							System.out.println("Average fuel efficiency (MPG): " + avg + "\n");
-						}
-					} else if (select.equals("W")) {
-						System.out.println("Output file name: ");
-						in2.nextLine();
-						String file = in2.nextLine();
-						PrintWriter outputFile = new PrintWriter(file);
-						ResultSet printTable = stat.executeQuery("SELECT * FROM Car");
-						String output = "";
-						while (printTable.next()) {
-							String Manufacturer = printTable.getString("Manufacturer");
-							String Model = printTable.getString("Model");
-							double Efficiency = printTable.getDouble("Efficiency");
-							double Price = printTable.getDouble("Price");
-							output += Manufacturer + "\t" + Model + "\t" + Efficiency + "\t" + Price
-									+ System.lineSeparator();
-						}
-						outputFile.write(output);
-						outputFile.close();
-						System.out.println();
-					} else if (select.equals("P")) {
-						ResultSet printTable = stat.executeQuery("SELECT * FROM Car");
-						while (printTable.next()) {
-							String Manufacturer = printTable.getString("Manufacturer");
-							String Model = printTable.getString("Model");
-							double Efficiency = printTable.getDouble("Efficiency");
-							double Price = printTable.getDouble("Price");
-							System.out.println(Manufacturer + "\t" + Model + "\t" + Efficiency + "\t" + Price);
-						}
-						System.out.println();
-					} else if (select.equals("M")) {
-						System.out.println("Upper bound on efficiency (MPG): ");
-						in2.nextLine();
-						String upperBound = in2.nextLine();
-						ResultSet printSubset = stat.executeQuery("SELECT * FROM Car WHERE Efficiency <=" + upperBound);
-						System.out.println("Manufacturer \t Model \t Efficiency \t Price");
-						while (printSubset.next()) {
-							String Manufacturer = printSubset.getString("Manufacturer");
-							String Model = printSubset.getString("Model");
-							double Efficiency = printSubset.getDouble("Efficiency");
-							double Price = printSubset.getDouble("Price");
-							System.out.println(Manufacturer + "\t" + Model + "\t" + Efficiency + "\t" + Price);
-						}
-						System.out.println();
-					}
-				}
-
-				in2.close();
-				in.close();
-				stat.close();
-				conn.close();
 			}
+
+			// Main loop of the program. Complete this while loop.
+			Scanner in2 = new Scanner(System.in);
+			boolean continueProgram = true;
+			while (continueProgram) {
+				System.out.println("Select from the following options");
+				System.out.println("(Q) Quit");
+				System.out.println("(A) Rooms");
+				System.out.println("(B) Calendar");
+				System.out.println("(C) Bills");
+				System.out.println("(D) Reports");
+				String select = in2.next();
+
+				select = select.toUpperCase();
+				if (select.equals("Q"))
+					continueProgram = false;
+				else if (select.equals("A")) {
+					System.out.println("Room specs:");
+					System.out.println("Room Number \t Price \t Bedrooms \t Kitchenette \t Handicapped");
+					ResultSet printRooms = stat.executeQuery("SELECT * FROM Hotel");
+					while (printRooms.next()) {
+						int roomNum = printRooms.getInt("RoomNum");
+						double roomPrice = printRooms.getDouble("RoomPrice");
+						int numOfBeds = printRooms.getInt("NumOfBeds");
+						boolean kitchenette = printRooms.getBoolean("Kitchenette");
+						boolean handicapped = printRooms.getBoolean("Handicapped");
+						System.out.println(roomNum + "\t\t" + roomPrice + "\t\t" + numOfBeds + "\t\t" + kitchenette
+								+ "\t\t" + handicapped);
+					}
+					System.out.println();
+				} else if (select.equals("B")) {
+					System.out.println("Select from the following options");
+					System.out.println("(A) Add a reservation");
+					System.out.println("(B) Delete a reservation");
+					System.out.println("(C) Check in/Check out");
+					String command = in2.next();
+					command = command.toUpperCase();
+					if (command.equals("A")) {
+
+					} else if (command.equals("B")) {
+
+					} else if (command.equals("C")) {
+
+					}
+
+					// ResultSet avgResult = stat.executeQuery("SELECT
+					// AVG(Efficiency) As ef FROM Car");
+					// while (avgResult.next()) {
+					// double avg = avgResult.getDouble("ef");
+					// System.out.println("Average fuel efficiency (MPG): " +
+					// avg + "\n");
+					// }
+				} else if (select.equals("C")) {
+					System.out.println("Enter room number: ");
+					int num = in2.nextInt();
+					ResultSet printBill = stat.executeQuery("SELECT roomPrice FROM " + num + " FROM Hotel");
+					double bill = printBill.getDouble("roomPrice");
+					System.out.println("Customer bill: " + bill + "\n");
+				} else if (select.equals("D")) {
+					System.out.println("Select from the following options");
+					System.out.println("(A) Occupancy Report");
+					System.out.println("(B) Housekeeping Report");
+					String command = in2.next();
+					command = command.toUpperCase();
+					if (command.equals("A")) {
+						Reports oReport = new Reports();
+						// todo
+					} else if (command.equals("B")) {
+						Reports hReport = new Reports();
+						// todo
+					}
+					System.out.println();
+				}
+			}
+			in2.close();
+			in.close();
+			stat.close();
+			conn.close();
 		}
 	}
 }

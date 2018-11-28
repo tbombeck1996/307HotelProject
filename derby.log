@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Nov 27 23:28:45 CST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0167-58ca-7cbf-0000035aa538 
+on database directory C:\Users\Kate\git\307HotelProject\BigJavaDB with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/C:/Users/Kate/Desktop/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_151-b12
+user.dir=C:\Users\Kate\git\307HotelProject
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

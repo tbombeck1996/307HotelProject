@@ -8,4 +8,15 @@ package javaCode;
 
 public class Reports {
 
+	Reports(){
+		
+	}
+	
+	public double occupancyRate(){
+		
+	}
+	
+	public boolean needsHousekeeping(){
+		
+	}
 }
