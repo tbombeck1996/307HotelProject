@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.io.*;
 
 /**
- * Updated: 11/27 
+ * Updated: 11/27 template used from HW5
+ * 
  * @author Katherine DuVall
  */
 public class HotelDB {
@@ -24,19 +25,21 @@ public class HotelDB {
 		try (Connection conn = SimpleDataSource.getConnection(); Statement stat = conn.createStatement()) {
 			try {
 				stat.execute("DROP TABLE Hotel");
+				stat.execute("DROP TABLE Calendar");
 			} catch (SQLException e) {
 				// get exception if table doesn't exist yet
 			}
 
 			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(5, 2), " + "numOfBeds INT, "
 					+ "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
+			//needs to be completed
+			stat.execute("CREATE TABLE Calendar (roomNum INT, " + "customerName VARCHAR(30) ");
 
 			String inputFileName = "hotel.txt";
 			File inputFile = new File(inputFileName);
 			Scanner in = new Scanner(inputFile);
 
-			// COMPLETE THIS WHILE LOOP to insert all cars from the input text
-			// file
+			// Inserts all data from hotel.txt
 			while (in.hasNextLine()) {
 				int roomNum = in.nextInt();
 				double roomPrice = in.nextDouble();
@@ -48,22 +51,24 @@ public class HotelDB {
 				stat.execute(query);
 			}
 
-			// Main loop of the program. Complete this while loop.
+			// Employee interface
 			Scanner in2 = new Scanner(System.in);
 			boolean continueProgram = true;
+			System.out.println("Welcome to the Hotel Management System.");
 			while (continueProgram) {
 				System.out.println("Select from the following options");
-				System.out.println("(Q) Quit");
 				System.out.println("(A) Rooms");
 				System.out.println("(B) Calendar");
 				System.out.println("(C) Bills");
 				System.out.println("(D) Reports");
-				String select = in2.next();
+				System.out.println("(Q) Quit");
+				String select = in2.next().toUpperCase();
 
-				select = select.toUpperCase();
-				if (select.equals("Q"))
+				if (select.equals("Q")) {
 					continueProgram = false;
-				else if (select.equals("A")) {
+					System.exit(0);
+					// Rooms
+				} else if (select.equals("A")) {
 					System.out.println("Room specs:");
 					System.out.println("Room Number \t Price \t Bedrooms \t Kitchenette \t Handicapped");
 					ResultSet printRooms = stat.executeQuery("SELECT * FROM Hotel");
@@ -77,6 +82,7 @@ public class HotelDB {
 								+ "\t\t" + handicapped);
 					}
 					System.out.println();
+					// Calendar
 				} else if (select.equals("B")) {
 					System.out.println("Select from the following options");
 					System.out.println("(A) Add a reservation");
@@ -85,25 +91,31 @@ public class HotelDB {
 					String command = in2.next();
 					command = command.toUpperCase();
 					if (command.equals("A")) {
-
+//						System.out.println("Customer name: ");
+//						String customer = in2.next();
+//						System.out.println("Model Name: ");
+//						String model = in2.next();
+//						System.out.println("MPG: ");
+//						double efficiency = in2.nextDouble();
+//						System.out.println("Price: ");
+//						double price = in2.nextDouble();
+//						String query = "INSERT INTO Calendar (Manufacturer, Model, Efficiency, Price) VALUES ('" + manufacturer
+//								+ "','" + model + "'," + efficiency + "," + price + ")";
+//						stat.execute(query);
 					} else if (command.equals("B")) {
+						String customer = in2.next();
 
 					} else if (command.equals("C")) {
+						String customer = in2.next();
 
 					}
-
-					// ResultSet avgResult = stat.executeQuery("SELECT
-					// AVG(Efficiency) As ef FROM Car");
-					// while (avgResult.next()) {
-					// double avg = avgResult.getDouble("ef");
-					// System.out.println("Average fuel efficiency (MPG): " +
-					// avg + "\n");
-					// }
+					// Bill
+					// todo: print customer name too
 				} else if (select.equals("C")) {
 					System.out.println("Enter room number: ");
 					int num = in2.nextInt();
-					ResultSet printBill = stat.executeQuery("SELECT roomPrice FROM " + num + " FROM Hotel");
-					double bill = printBill.getDouble("roomPrice");
+					ResultSet printBill = stat.executeQuery("SELECT RoomPrice FROM Hotel WHERE RoomNum = " + num);
+					double bill = printBill.getDouble("RoomPrice");
 					System.out.println("Customer bill: " + bill + "\n");
 				} else if (select.equals("D")) {
 					System.out.println("Select from the following options");
@@ -127,4 +139,5 @@ public class HotelDB {
 			conn.close();
 		}
 	}
+
 }
