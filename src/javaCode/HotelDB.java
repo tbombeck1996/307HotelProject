@@ -11,6 +11,8 @@ import java.io.*;
 /**
  * Updated: 11/27 template used from HW5
  * 
+ * need to create a calendar table
+ * 
  * @author Katherine DuVall
  */
 public class HotelDB {
@@ -25,42 +27,26 @@ public class HotelDB {
 		try (Connection conn = SimpleDataSource.getConnection(); Statement stat = conn.createStatement()) {
 			try {
 				stat.execute("DROP TABLE Hotel");
-				stat.execute("DROP TABLE Calendar");
 			} catch (SQLException e) {
 				// get exception if table doesn't exist yet
 			}
 
 			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(5, 2), " + "numOfBeds INT, "
 					+ "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
-			// needs to be completed to add calendar database
-			stat.execute("CREATE TABLE Calendar (roomNum INT, " + "customerName VARCHAR(30) ");
-
-			String inputFileName1 = "hotel.txt";
-			File inputFile1 = new File(inputFileName1);
-			Scanner in1 = new Scanner(inputFile1);
-
-			String inputFileName2 = "calendar.txt";
-			File inputFile2 = new File(inputFileName2);
-			Scanner in2 = new Scanner(inputFile2);
-
+			
+			String inputFileName = "hotel.txt";
+			File inputFile = new File(inputFileName);
+			Scanner in = new Scanner(inputFile);
+			
 			// Inserts all data from hotel.txt
-			while (in1.hasNextLine()) {
-				int roomNum = in1.nextInt();
-				double roomPrice = in1.nextDouble();
-				int numOfBeds = in1.nextInt();
-				boolean kitchenette = in1.nextBoolean();
-				boolean handicapped = in1.nextBoolean();
+			while (in.hasNextLine()) {
+				int roomNum = in.nextInt();
+				double roomPrice = in.nextDouble();
+				int numOfBeds = in.nextInt();
+				boolean kitchenette = in.nextBoolean();
+				boolean handicapped = in.nextBoolean();
 				String query = "INSERT INTO Hotel (RoomNum, RoomPrice, NumOfBeds, Kitchenette, Handicapped) VALUES ("
 						+ roomNum + "," + roomPrice + "," + numOfBeds + "," + kitchenette + "," + handicapped + ")";
-				stat.execute(query);
-			}
-
-			// Inserts all data from calendar.txt
-			while (in2.hasNextLine()) {
-				int roomNum = in2.nextInt();
-				String customerName = in2.next();
-				String query = "INSERT INTO Calendar (RoomNum, CustomerName) VALUES (" + roomNum + "," + customerName
-						+ ")";
 				stat.execute(query);
 			}
 
@@ -148,8 +134,7 @@ public class HotelDB {
 					System.out.println();
 				}
 			}
-			in2.close();
-			in1.close();
+			in.close();
 			in3.close();
 			stat.close();
 			conn.close();
