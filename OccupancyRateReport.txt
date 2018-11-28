@@ -1,0 +1,3 @@
+Total rooms: 11
+Total occupants: 0
+Occupancy Rate: 0.0
