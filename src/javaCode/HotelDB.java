@@ -32,27 +32,40 @@ public class HotelDB {
 
 			stat.execute("CREATE TABLE Hotel (roomNum INT, " + "roomPrice DECIMAL(5, 2), " + "numOfBeds INT, "
 					+ "kitchenette BOOLEAN, " + "handicapped BOOLEAN) ");
-			//needs to be completed
+			// needs to be completed to add calendar database
 			stat.execute("CREATE TABLE Calendar (roomNum INT, " + "customerName VARCHAR(30) ");
 
-			String inputFileName = "hotel.txt";
-			File inputFile = new File(inputFileName);
-			Scanner in = new Scanner(inputFile);
+			String inputFileName1 = "hotel.txt";
+			File inputFile1 = new File(inputFileName1);
+			Scanner in1 = new Scanner(inputFile1);
+
+			String inputFileName2 = "calendar.txt";
+			File inputFile2 = new File(inputFileName2);
+			Scanner in2 = new Scanner(inputFile2);
 
 			// Inserts all data from hotel.txt
-			while (in.hasNextLine()) {
-				int roomNum = in.nextInt();
-				double roomPrice = in.nextDouble();
-				int numOfBeds = in.nextInt();
-				boolean kitchenette = in.nextBoolean();
-				boolean handicapped = in.nextBoolean();
+			while (in1.hasNextLine()) {
+				int roomNum = in1.nextInt();
+				double roomPrice = in1.nextDouble();
+				int numOfBeds = in1.nextInt();
+				boolean kitchenette = in1.nextBoolean();
+				boolean handicapped = in1.nextBoolean();
 				String query = "INSERT INTO Hotel (RoomNum, RoomPrice, NumOfBeds, Kitchenette, Handicapped) VALUES ("
 						+ roomNum + "," + roomPrice + "," + numOfBeds + "," + kitchenette + "," + handicapped + ")";
 				stat.execute(query);
 			}
 
+			// Inserts all data from calendar.txt
+			while (in2.hasNextLine()) {
+				int roomNum = in2.nextInt();
+				String customerName = in2.next();
+				String query = "INSERT INTO Calendar (RoomNum, CustomerName) VALUES (" + roomNum + "," + customerName
+						+ ")";
+				stat.execute(query);
+			}
+
 			// Employee interface
-			Scanner in2 = new Scanner(System.in);
+			Scanner in3 = new Scanner(System.in);
 			boolean continueProgram = true;
 			System.out.println("Welcome to the Hotel Management System.");
 			while (continueProgram) {
@@ -62,7 +75,7 @@ public class HotelDB {
 				System.out.println("(C) Bills");
 				System.out.println("(D) Reports");
 				System.out.println("(Q) Quit");
-				String select = in2.next().toUpperCase();
+				String select = in3.next().toUpperCase();
 
 				if (select.equals("Q")) {
 					continueProgram = false;
@@ -88,32 +101,34 @@ public class HotelDB {
 					System.out.println("(A) Add a reservation");
 					System.out.println("(B) Delete a reservation");
 					System.out.println("(C) Check in/Check out");
-					String command = in2.next();
+					String command = in3.next();
 					command = command.toUpperCase();
 					if (command.equals("A")) {
-//						System.out.println("Customer name: ");
-//						String customer = in2.next();
-//						System.out.println("Model Name: ");
-//						String model = in2.next();
-//						System.out.println("MPG: ");
-//						double efficiency = in2.nextDouble();
-//						System.out.println("Price: ");
-//						double price = in2.nextDouble();
-//						String query = "INSERT INTO Calendar (Manufacturer, Model, Efficiency, Price) VALUES ('" + manufacturer
-//								+ "','" + model + "'," + efficiency + "," + price + ")";
-//						stat.execute(query);
+						// System.out.println("Customer name: ");
+						// String customer = in2.next();
+						// System.out.println("Model Name: ");
+						// String model = in2.next();
+						// System.out.println("MPG: ");
+						// double efficiency = in2.nextDouble();
+						// System.out.println("Price: ");
+						// double price = in2.nextDouble();
+						// String query = "INSERT INTO Calendar (Manufacturer,
+						// Model, Efficiency, Price) VALUES ('" + manufacturer
+						// + "','" + model + "'," + efficiency + "," + price +
+						// ")";
+						// stat.execute(query);
 					} else if (command.equals("B")) {
-						String customer = in2.next();
+						String customer = in3.next();
 
 					} else if (command.equals("C")) {
-						String customer = in2.next();
+						String customer = in3.next();
 
 					}
 					// Bill
 					// todo: print customer name too
 				} else if (select.equals("C")) {
 					System.out.println("Enter room number: ");
-					int num = in2.nextInt();
+					int num = in3.nextInt();
 					ResultSet printBill = stat.executeQuery("SELECT RoomPrice FROM Hotel WHERE RoomNum = " + num);
 					double bill = printBill.getDouble("RoomPrice");
 					System.out.println("Customer bill: " + bill + "\n");
@@ -121,7 +136,7 @@ public class HotelDB {
 					System.out.println("Select from the following options");
 					System.out.println("(A) Occupancy Report");
 					System.out.println("(B) Housekeeping Report");
-					String command = in2.next();
+					String command = in3.next();
 					command = command.toUpperCase();
 					if (command.equals("A")) {
 						Reports oReport = new Reports();
@@ -134,7 +149,8 @@ public class HotelDB {
 				}
 			}
 			in2.close();
-			in.close();
+			in1.close();
+			in3.close();
 			stat.close();
 			conn.close();
 		}
