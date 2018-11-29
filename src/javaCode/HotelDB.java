@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.io.*;
 
 /**
- * Updated: 11/27 template used from HW5
+ * Updated: 11/28 template used from HW5
  * 
- * need to create a calendar table
  * 
  * @author Katherine DuVall
  */
@@ -61,7 +60,7 @@ public class HotelDB {
 			while (cal.hasNextLine()) {
 				int roomNum = cal.nextInt();
 				String date = cal.next();
-				String customerName = cal.next();
+				String customerName = cal.next().toUpperCase();
 				boolean checkIn = cal.nextBoolean();
 				boolean checkOut = cal.nextBoolean();
 				String query = "INSERT INTO Calendar (RoomNum, Date, CustomerName, CheckIn, CheckOut) VALUES ("
@@ -82,11 +81,15 @@ public class HotelDB {
 				System.out.println("(Q) Quit");
 				String select = in.next().toUpperCase();
 
+				// QUIT
 				if (select.equals("Q")) {
 					continueProgram = false;
 					System.exit(0);
-					// Rooms
-				} else if (select.equals("A")) {
+
+				}
+
+				// ROOMS
+				else if (select.equals("A")) {
 					System.out.println("Room specs:");
 					System.out.println("Room Number \t Price \t Bedrooms \t Kitchenette \t Handicapped");
 					ResultSet printRooms = stat.executeQuery("SELECT * FROM Hotel");
@@ -100,60 +103,68 @@ public class HotelDB {
 								+ "\t\t" + handicapped);
 					}
 					System.out.println();
-					// Calendar
-				} else if (select.equals("B")) {
+
+				}
+
+				// CALENDAR
+				else if (select.equals("B")) {
 					System.out.println("Select from the following options");
 					System.out.println("(A) Add a reservation");
 					System.out.println("(B) Delete a reservation");
 					System.out.println("(C) Check in/Check out");
 					String command = in.next();
 					command = command.toUpperCase();
+					// add reservation
 					if (command.equals("A")) {
-						// System.out.println("Customer name: ");
-						// String customer = in2.next();
-						// System.out.println("Model Name: ");
-						// String model = in2.next();
-						// System.out.println("MPG: ");
-						// double efficiency = in2.nextDouble();
-						// System.out.println("Price: ");
-						// double price = in2.nextDouble();
-						// String query = "INSERT INTO Calendar (Manufacturer,
-						// Model, Efficiency, Price) VALUES ('" + manufacturer
-						// + "','" + model + "'," + efficiency + "," + price +
-						// ")";
-						// stat.execute(query);
-					} else if (command.equals("B")) {
-						String customer = in.next();
-
-					} else if (command.equals("C")) {
-						String customer = in.next();
-
+						System.out.println("Enter customer name: ");
+						String customerName = in.next().toUpperCase();
+						System.out.println("Enter room number: ");
+						int roomNum = in.nextInt();
+						System.out.println("Enter date YYYY-MM-DD:");
+						String date = in.next();
+						boolean checkIn = false;
+						boolean checkOut = false;
+						String query = "INSERT INTO Calendar (RoomNum, Date, CustomerName, CheckIn, CheckOut) VALUES ('"
+								+ roomNum + "','" + date + "'," + customerName + "," + checkIn + "," + checkOut + ")";
+						stat.execute(query);
+					} // delete reservation
+					else if (command.equals("B")) {
+						System.out.println("Enter a customer name: ");
+						String customer = in.next().toUpperCase();
+						String query = "DELETE FROM Calendar WHERE CustomerName = " + customer + ")";
+						stat.execute(query);
+					} // check in and out
+					else if (command.equals("C")) {
+						System.out.println("A) Check In B)Check Out ");
+						command = in.next().toUpperCase();
+						if (command.equals("A")) {
+							System.out.println("Enter customer name: ");
+							String customer = in.next().toUpperCase();
+							String query = "UPDATE Calendar SET CheckIn = true AND CheckOut = false WHERE CustomerName = "
+									+ customer + ")";
+							stat.executeQuery(query);
+						} else if (command.equals("B")) {
+							System.out.println("Enter customer name: ");
+							String customer = in.next().toUpperCase();
+							String query = "UPDATE Calendar SET CheckIn = false AND CheckOut = true WHERE CustomerName = "
+									+ customer + ")";
+							stat.executeQuery(query);
+						}
 					}
-					// write database to file
-					PrintWriter outputFile = new PrintWriter("calendar.txt");
-					ResultSet printTable = stat.executeQuery("SELECT * FROM Calendar");
-					String output = "";
-					while (printTable.next()) {
-						int roomNum = printTable.getInt("RoomNum");
-						String date = printTable.getString("Date");
-						String customerName = printTable.getString("CustomerName");
-						boolean checkIn = printTable.getBoolean("CheckIn");
-						boolean checkOut = printTable.getBoolean("CheckOut");
-						output += roomNum + "\t" + date + "\t" + customerName + "\t" + checkIn + "\t" + checkOut
-								+ System.lineSeparator();
-					}
-					outputFile.write(output);
-					outputFile.close();
-					// Bill
-					// todo: print customer name too
-				} else if (select.equals("C")) {
+				}
+
+				// BILLS
+				else if (select.equals("C")) {
 					System.out.println("Enter room number: ");
 					int num = in.nextInt();
 					ResultSet printBill = stat.executeQuery("SELECT RoomPrice FROM Hotel WHERE RoomNum = " + num);
 					printBill.next();
 					double bill = printBill.getDouble("RoomPrice");
 					System.out.println("Customer bill: " + bill + "\n");
-				} else if (select.equals("D")) {
+				}
+
+				// reports
+				else if (select.equals("D")) {
 					System.out.println("Select from the following options");
 					System.out.println("(A) Occupancy Report");
 					System.out.println("(B) Housekeeping Report");
@@ -206,7 +217,39 @@ public class HotelDB {
 			in.close();
 			stat.close();
 			conn.close();
+			// Write hotel database to file
+			PrintWriter outputFileH = new PrintWriter("hotel.txt");
+			ResultSet printTableH = stat.executeQuery("SELECT * FROM Hotel");
+			String outputH = "";
+			while (printTableH.next()) {
+				int roomNum = printTableH.getInt("RoomNum");
+				String date = printTableH.getString("Date");
+				String customerName = printTableH.getString("CustomerName");
+				boolean checkIn = printTableH.getBoolean("CheckIn");
+				boolean checkOut = printTableH.getBoolean("CheckOut");
+				outputH += roomNum + "\t" + date + "\t" + customerName + "\t" + checkIn + "\t" + checkOut
+						+ System.lineSeparator();
+			}
+			outputFileH.write(outputH);
+			outputFileH.close();
+
+			// Write calendar database to file
+			PrintWriter outputFileC = new PrintWriter("calendar.txt");
+			ResultSet printTableC = stat.executeQuery("SELECT * FROM Calendar");
+			String outputC = "";
+			while (printTableC.next()) {
+				int roomNum = printTableC.getInt("RoomNum");
+				String date = printTableC.getString("Date");
+				String customerName = printTableC.getString("CustomerName");
+				boolean checkIn = printTableC.getBoolean("CheckIn");
+				boolean checkOut = printTableC.getBoolean("CheckOut");
+				outputC += roomNum + "\t" + date + "\t" + customerName + "\t" + checkIn + "\t" + checkOut
+						+ System.lineSeparator();
+			}
+			outputFileC.write(outputC);
+			outputFileC.close();
 		}
+
 	}
 
 }
