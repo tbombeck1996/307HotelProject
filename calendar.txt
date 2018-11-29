@@ -1,2 +1,2 @@
-1	2018-05-11	SMITH	false	false
-4	2018-06-23	HUE	false	false
+1	2018-05-11	SMITH	N	N
+4	2018-06-23	HUE	N	N
