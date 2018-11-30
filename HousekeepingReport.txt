@@ -1,2 +1,5 @@
-Total rooms needing housekeeping: 1
+Total rooms needing housekeeping: 4
+1	Needs Housekeeping
 3	Needs Housekeeping
+11	Needs Housekeeping
+7	Needs Housekeeping

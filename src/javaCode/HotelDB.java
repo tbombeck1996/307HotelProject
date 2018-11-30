@@ -140,7 +140,7 @@ public class HotelDB {
 						stat.execute(query);
 					} // check in and out
 					else if (command.equals("C")) {
-						System.out.println("(A) Check In\n(B)Check Out ");
+						System.out.println("(A) Check In\n(B) Check Out ");
 						command = in.next().toUpperCase();
 						// check in
 						if (command.equals("A")) {
