@@ -11,8 +11,10 @@ import java.io.*;
 /**
  * Updated: 11/29
  * 
+ * This class is the program for the hotel database management system. The main
+ * method executes everything and the SQL database
  * 
- * @author Katherine DuVall
+ * @author Katherine DuVall, Thomas Bombeck, Haylee Weaver, Sara Braymen
  */
 public class HotelDB {
 	public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
@@ -75,7 +77,7 @@ public class HotelDB {
 			System.out.println("Welcome to the Hotel Management System.");
 			while (continueProgram) {
 				System.out.println(
-						"Select from the following options\n(A) Rooms\n(B) Bills\n(C) Calendar\n(D) Reports\n(Q) Quit");
+						"Select from the following options:\n(A) Rooms\n(B) Bills\n(C) Calendar\n(D) Reports\n(Q) Quit");
 				String select = in.next().toUpperCase();
 
 				// QUIT
@@ -86,8 +88,7 @@ public class HotelDB {
 
 				// ROOMS
 				else if (select.equals("A")) {
-					System.out.println("Room specs:");
-					System.out.println("Room Number \t Price \t Bedrooms \t Kitchenette \t Handicapped");
+					System.out.println("\nRoom specs:\nRoom Number \t Price \t Bedrooms \t Kitchenette \t Handicapped");
 					ResultSet printRooms = stat.executeQuery("SELECT * FROM Hotel");
 					while (printRooms.next()) {
 						int roomNum = printRooms.getInt("RoomNum");
@@ -103,7 +104,7 @@ public class HotelDB {
 
 				// BILLS
 				else if (select.equals("B")) {
-					System.out.println("Enter room number to print the bill: ");
+					System.out.println("\nEnter room number to print the bill: ");
 					int num = in.nextInt();
 					ResultSet printBill = stat.executeQuery("SELECT RoomPrice FROM Hotel WHERE RoomNum = " + num);
 					printBill.next();
@@ -114,7 +115,7 @@ public class HotelDB {
 				// CALENDAR
 				else if (select.equals("C")) {
 					System.out.println(
-							"Select from the following options:\n(A) Add a reservation\n(B) Delete a reservation\n(C) Check in/Check out\nD)Print Calendar");
+							"\nSelect from the following options:\n(A) Add a reservation\n(B) Delete a reservation\n(C) Check in/Check out\n(D) Print Calendar");
 					String command = in.next();
 					command = command.toUpperCase();
 					// add reservation
@@ -139,7 +140,7 @@ public class HotelDB {
 						stat.execute(query);
 					} // check in and out
 					else if (command.equals("C")) {
-						System.out.println("A) Check In\nB)Check Out ");
+						System.out.println("(A) Check In\n(B)Check Out ");
 						command = in.next().toUpperCase();
 						// check in
 						if (command.equals("A")) {
@@ -158,17 +159,17 @@ public class HotelDB {
 						}
 					} // print calendar database
 					else if (command.equals("D")) {
-						System.out.println("Current Calendar:");
-						System.out.println("Room Number \t Date \t Customer \t Check In \t Check Out");
+						System.out.println(
+								"\nCurrent Calendar:\nRoom Number \t Date \t\t Customer \t Check In \t Check Out");
 						ResultSet printCalendar = stat.executeQuery("SELECT * FROM Calendar");
 						while (printCalendar.next()) {
-							int roomNum = printCalendar.getInt("RoomNum");
-							String date = printCalendar.getString("Date");
-							String customer = printCalendar.getString("Customer");
-							String checkIn = printCalendar.getString("CheckIn");
-							String checkOut = printCalendar.getString("CheckOut");
+							int roomNum = printCalendar.getInt("roomNum");
+							String date = printCalendar.getString("date");
+							String customer = printCalendar.getString("customerName");
+							String checkIn = printCalendar.getString("checkIn");
+							String checkOut = printCalendar.getString("checkOut");
 							System.out.println(
-									roomNum + "\t\t" + date + "\t\t" + customer + "\t\t" + checkIn + "\t\t" + checkOut);
+									roomNum + "\t\t" + date + "\t" + customer + "\t\t" + checkIn + "\t\t" + checkOut);
 						}
 						System.out.println();
 					}
@@ -196,7 +197,7 @@ public class HotelDB {
 				// reports
 				else if (select.equals("D")) {
 					System.out.println(
-							"Select from the following options:\n(A) Occupancy Report\n(B) Housekeeping Report");
+							"\nSelect from the following options:\n(A) Occupancy Report\n(B) Housekeeping Report");
 					String command = in.next();
 					command = command.toUpperCase();
 
