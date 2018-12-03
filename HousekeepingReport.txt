@@ -1,4 +1,5 @@
 Total rooms needing housekeeping: 4
+Room Number
 1	Needs Housekeeping
 3	Needs Housekeeping
 11	Needs Housekeeping
